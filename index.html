@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Calculator</title>
+  
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: #f0f2f5;
+    }
+
+    .calculator {
+      width: 320px;
+      background-color: #ffffff;
+      padding: 24px;
+      border-radius: 16px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    }
+
+    .display {
+      width: 100%;
+      height: 60px;
+      background-color: #1e293b;
+      color: #ffffff;
+      font-size: 32px;
+      text-align: right;
+      padding: 10px 16px;
+      border: none;
+      border-radius: 10px;
+      margin-bottom: 20px;
+      outline: none;
+    }
+
+    .buttons {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+    }
+
+    button {
+      height: 55px;
+      font-size: 20px;
+      font-weight: 600;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      background-color: #f1f5f9;
+      color: #334155;
+      transition: background-color 0.2s, transform 0.1s;
+    }
+
+    button:hover {
+      background-color: #e2e8f0;
+    }
+
+    button:active {
+      transform: scale(0.96);
+    }
+
+    .btn-operator {
+      background-color: #e0e7ff;
+      color: #4f46e5;
+    }
+
+    .btn-operator:hover {
+      background-color: #c7d2fe;
+    }
+
+    .btn-clear {
+      background-color: #fee2e2;
+      color: #ef4444;
+    }
+
+    .btn-clear:hover {
+      background-color: #fca5a5;
+    }
+
+    .btn-equal {
+      background-color: #4f46e5;
+      color: #ffffff;
+      grid-column: span 2; 
+    }
+
+    .btn-equal:hover {
+      background-color: #4338ca;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="calculator">
+
+    <input type="text" id="display" class="display" value="" readonly placeholder="0">
+
+    <div class="buttons">
+    
+      <button class="btn-clear" onclick="clearDisplay()">C</button>
+      <button class="btn-operator" onclick="appendValue('/')">÷</button>
+      <button class="btn-operator" onclick="appendValue('*')">×</button>
+      <button class="btn-operator" onclick="appendValue('-')">−</button>
+
+      <button onclick="appendValue('7')">7</button>
+      <button onclick="appendValue('8')">8</button>
+      <button onclick="appendValue('9')">9</button>
+      <button class="btn-operator" onclick="appendValue('+')">+</button>
+
+      <button onclick="appendValue('4')">4</button>
+      <button onclick="appendValue('5')">5</button>
+      <button onclick="appendValue('6')">6</button>
+
+      <button class="btn-equal" onclick="calculateResult()">=</button>
+
+      <button onclick="appendValue('1')">1</button>
+      <button onclick="appendValue('2')">2</button>
+      <button onclick="appendValue('3')">3</button>
+
+      <button onclick="appendValue('0')">0</button>
+      <button onclick="appendValue('.')">.</button>
+    </div>
+  </div>
+
+  <script>
+    const display = document.getElementById('display');
+
+    function appendValue(input) {
+      display.value += input;
+    }
+
+    function clearDisplay() {
+      display.value = '';
+    }
+
+    function calculateResult() {
+      if (display.value === '') return;
+
+      try {
+        display.value = eval(display.value);
+      } catch (error) {
+        display.value = 'Error';
+        setTimeout(() => {
+          clearDisplay();
+        }, 1500);
+      }
+    }
+
+    document.addEventListener('keydown', function(event) {
+      const key = event.key;
+
+      if ((key >= '0' && key <= '9') || key === '.' || key === '+' || key === '-' || key === '*' || key === '/') {
+        appendValue(key);
+      } 
+      else if (key === 'Enter' || key === '=') {
+        event.preventDefault(); 
+        calculateResult();
+      } 
+      else if (key === 'Backspace') {
+        display.value = display.value.slice(0, -1);
+      } 
+      else if (key === 'Escape') {
+        clearDisplay();
+      }
+    });
+  </script>
+</body>
+</html>
